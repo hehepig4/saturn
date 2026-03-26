@@ -1,0 +1,39 @@
+--- a/trainer.py
++++ b/trainer.py
+@@ -207,10 +207,14 @@ def sql2question(mode, sql_dir, work_dir, dataset, train_itr=None):
+     if os.path.exists(part_tar_file):
+         os.remove(part_tar_file)
+     shutil.copy(sql_tar_file, part_dir)
+-         
++    
++    # Get the first GPU from CUDA_VISIBLE_DEVICES for sql2question
++    # The sql2nlg script sets CUDA_VISIBLE_DEVICES internally based on the gpu_id parameter
++    cuda_devices = os.environ.get('CUDA_VISIBLE_DEVICES', '0')
++    first_gpu = cuda_devices.split(',')[0] if cuda_devices else '0'
++         
+     cmd = 'cd %s/open_table_discovery/sql2question ;' % work_dir + \
+           ' . %s/pyenv/sql2question/bin/activate ;' % work_dir + \
+-          ' ./decode_sql2nlg.sh t5-base %s/models/sql2nlg-t5-base_2022_01_21.ckpt' % work_dir + \
+-          ' 0 ' + dataset + ' sql_data ' + part_name
++          ' ./decode_sql2nlg.sh %s/models/t5-base %s/models/sql2nlg-t5-base_2022_01_21.ckpt' % (work_dir, work_dir) + \
++          ' ' + first_gpu + ' ' + dataset + ' sql_data ' + part_name
+     os.system(cmd) 
+ 
+     out_dir = os.path.join(work_dir, 'open_table_discovery', 'sql2question/sql2nlg/outputs/test_model', 
+@@ -302,7 +306,15 @@ def confirm(args):
+     data_ready = False
+     if (data_state is not None) and data_state['data_ready']:
+         data_ready = True
+     opt = None
+     if data_ready:
+-        str_msg = 'Training %s already exists, type \n' % get_train_itr_desp(data_state['data_itr']) + \
++        # Auto-continue if SOLO_AUTO_CONTINUE env var is set or stdin is not a tty
++        auto_continue = os.environ.get('SOLO_AUTO_CONTINUE', '0') == '1' or not os.isatty(0)
++        if auto_continue:
++            print('Training %s already exists, auto-continuing with existing data' % get_train_itr_desp(data_state['data_itr']))
++            opt = ConfirmOption.UseExisting
++        else:
++            str_msg = 'Training %s already exists, type \n' % get_train_itr_desp(data_state['data_itr']) + \
+                   '1 - Continue with existing data \n' + \
+                   '2 - train with new data (existing training data will be deleted) \n' + \
+                   'q - exit\n'

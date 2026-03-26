@@ -1,0 +1,51 @@
+{
+  "models": {
+
+    "default_model": {
+      "provider": "openai",
+      "model_name": "Qwen3-32B",
+      "description": "Local sglang Qwen3-32B (primary)",
+      "temperature": 0,
+      "max_tokens": 32768,
+      
+      
+      "purpose": "default",
+      "api_config_override": {
+        "base_url": "http://localhost:8000/v1",
+        "api_key": "token-abcd123"
+      }
+    },
+    "gemini_model": {
+      "provider": "openai",
+      "model_name": "google/gemini-3-flash-preview",
+      "description": "Online Gemini via OpenRouter",
+      "temperature": 0,
+      "max_tokens": 32768,
+
+      "purpose": "gemini"
+    },
+    "local_vllm_model": {
+      "provider": "openai",
+      "model_name": "Qwen3-32B",
+      "description": "Local sglang Qwen3-32B",
+      "temperature": 0,
+      "max_tokens": 32768,
+      
+      
+      "purpose": "local",
+      "api_config_override": {
+        "base_url": "http://localhost:8000/v1",
+        "api_key": "token-abcd123"
+      }
+    }
+  },
+  "purpose_mapping": {
+    "default": "default_model",
+    "local": "local_vllm_model",
+    "gemini": "gemini_model"
+  },
+  "api_config": {
+    "base_url": "URL_NOT_SET",
+    "max_retries": 3
+  }
+}

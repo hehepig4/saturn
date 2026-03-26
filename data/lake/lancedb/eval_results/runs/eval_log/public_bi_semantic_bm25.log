@@ -1,0 +1,98 @@
+WARNING: overwriting environment variables set in the machine
+overwriting variable DATALAKE_ROOT
+2026-03-08 15:49:21.807 | INFO     | __main__:load_unified_analysis:132 - Loading unified analysis from: **/data/lake/lancedb/eval_results/public_bi_test_unified_analysis_all_local_rag3_vector.json
+2026-03-08 15:49:21.843 | INFO     | __main__:load_unified_analysis:135 - Loaded 800 query analyses
+2026-03-08 15:49:26.769 | INFO     | __main__:load_indexes_and_embedder:156 - Loading indexes and embedder...
+2026-03-08 15:49:26.872 | INFO     | store.embedding.embedding_registry:__init__:43 - Initialized EmbeddingFunctionRegistry
+2026-03-08 15:49:26.872 | INFO     | store.embedding.embedding_registry:register_function:88 - Creating embedding function: bge-m3 (text)
+2026-03-08 15:49:26.872 | INFO     | store.embedding.embedding_registry:register_function:101 - ✓ Registered embedding function: bge-m3
+2026-03-08 15:49:26.872 | INFO     | store.embedding.embedding_registry:register_function:102 -     Model: bge-m3
+2026-03-08 15:49:26.872 | INFO     | store.embedding.embedding_registry:register_function:103 -     Path: **/model/bge-m3
+2026-03-08 15:49:26.872 | INFO     | store.embedding.embedding_registry:register_function:104 -     Dimension: 1024
+2026-03-08 15:49:26.872 | INFO     | __main__:load_indexes_and_embedder:172 -   ✓ FAISS: 203 vectors
+2026-03-08 15:49:26.872 | INFO     | __main__:load_indexes_and_embedder:178 -   ✓ BM25: 203 documents
+2026-03-08 15:49:26.872 | INFO     | __main__:load_indexes_and_embedder:188 -   Available indexes: FAISS, BM25
+2026-03-08 15:49:26.872 | INFO     | __main__:load_indexes_and_embedder:189 -   Loaded in 0.10s
+2026-03-08 15:49:26.872 | INFO     | __main__:analyze_hyde_mode:385 - Analyzing 800 queries with mode=raw, retriever=bm25
+2026-03-08 15:49:27.102 | INFO     | __main__:analyze_hyde_mode:385 - Analyzing 800 queries with mode=combined, retriever=bm25
+
+
+================================================================================
+🔬 HyDE Comparison Analysis
+   Retriever: bm25
+   Modes: ['raw', 'combined']
+   Queries: 800
+================================================================================
+
+────────────────────────────────────────
+Running mode: raw
+────────────────────────────────────────
+   [bm25/raw] Processed 100/800, hit@100: 100.0%
+   [bm25/raw] Processed 200/800, hit@100: 99.5%
+   [bm25/raw] Processed 300/800, hit@100: 99.7%
+   [bm25/raw] Processed 400/800, hit@100: 99.5%
+   [bm25/raw] Processed 500/800, hit@100: 99.4%
+   [bm25/raw] Processed 600/800, hit@100: 99.5%
+   [bm25/raw] Processed 700/800, hit@100: 99.6%
+   [bm25/raw] Processed 800/800, hit@100: 99.6%
+
+────────────────────────────────────────
+Running mode: combined
+────────────────────────────────────────
+   [bm25/combined] Processed 100/800, hit@100: 100.0%
+   [bm25/combined] Processed 200/800, hit@100: 100.0%
+   [bm25/combined] Processed 300/800, hit@100: 100.0%
+   [bm25/combined] Processed 400/800, hit@100: 99.8%
+   [bm25/combined] Processed 500/800, hit@100: 99.6%
+   [bm25/combined] Processed 600/800, hit@100: 99.5%
+   [bm25/combined] Processed 700/800, hit@100: 99.6%
+   [bm25/combined] Processed 800/800, hit@100: 99.6%
+
+================================================================================
+📊 METRICS COMPARISON (bm25)
+================================================================================
+
+📊 RAW (n=800)
+   Hit@1:   69.4%
+   Hit@3:   87.2%
+   Hit@5:   91.4%
+   Hit@10:  95.9%
+   Hit@50:  99.2%
+   Hit@100: 99.6%
+   MRR:        0.7930
+   Not Found:  3 (0.4%)
+
+📊 COMBINED (n=800)
+   Hit@1:   71.8%
+   Hit@3:   82.5%
+   Hit@5:   86.5%
+   Hit@10:  91.8%
+   Hit@50:  98.2%
+   Hit@100: 99.6%
+   MRR:        0.7863
+   Not Found:  3 (0.4%)
+
+────────────────────────────────────────────────────────────────────────────────
+📈 Summary Table
+────────────────────────────────────────────────────────────────────────────────
+   Metric         RAW            COMBINED       
+   ---------------------------------------------
+   hit@1          69.4%          71.8%          
+   hit@3          87.2%          82.5%          
+   hit@5          91.4%          86.5%          
+   hit@10         95.9%          91.8%          
+   hit@50         99.2%          98.2%          
+   hit@100        99.6%          99.6%          
+   mrr            0.7930         0.7863         
+
+================================================================================
+📊 Case-by-Case Analysis (Hit@10)
+================================================================================
+
+   RAW vs COMBINED:
+      raw wins: 51 queries
+      combined wins: 18 queries
+      Both succeed: 716 queries
+      Both fail: 15 queries
+      Net improvement (combined - raw): -33
+

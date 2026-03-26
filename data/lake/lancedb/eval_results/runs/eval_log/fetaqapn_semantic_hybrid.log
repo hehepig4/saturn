@@ -1,0 +1,101 @@
+WARNING: overwriting environment variables set in the machine
+overwriting variable DATALAKE_ROOT
+2026-03-08 15:48:42.903 | INFO     | __main__:load_unified_analysis:132 - Loading unified analysis from: **/data/lake/lancedb/eval_results/fetaqapn_test_unified_analysis_all_local_rag3_vector.json
+2026-03-08 15:48:42.926 | INFO     | __main__:load_unified_analysis:135 - Loaded 801 query analyses
+2026-03-08 15:48:47.838 | INFO     | __main__:load_indexes_and_embedder:156 - Loading indexes and embedder...
+2026-03-08 15:48:47.946 | INFO     | store.embedding.embedding_registry:__init__:43 - Initialized EmbeddingFunctionRegistry
+2026-03-08 15:48:47.947 | INFO     | store.embedding.embedding_registry:register_function:88 - Creating embedding function: bge-m3 (text)
+2026-03-08 15:48:47.947 | INFO     | store.embedding.embedding_registry:register_function:101 - ✓ Registered embedding function: bge-m3
+2026-03-08 15:48:47.947 | INFO     | store.embedding.embedding_registry:register_function:102 -     Model: bge-m3
+2026-03-08 15:48:47.947 | INFO     | store.embedding.embedding_registry:register_function:103 -     Path: **/model/bge-m3
+2026-03-08 15:48:47.947 | INFO     | store.embedding.embedding_registry:register_function:104 -     Dimension: 1024
+2026-03-08 15:48:47.947 | INFO     | __main__:load_indexes_and_embedder:172 -   ✓ FAISS: 10330 vectors
+2026-03-08 15:48:47.947 | INFO     | __main__:load_indexes_and_embedder:178 -   ✓ BM25: 10330 documents
+2026-03-08 15:48:47.947 | INFO     | __main__:load_indexes_and_embedder:188 -   Available indexes: FAISS, BM25
+2026-03-08 15:48:47.947 | INFO     | __main__:load_indexes_and_embedder:189 -   Loaded in 0.11s
+2026-03-08 15:48:47.947 | INFO     | __main__:analyze_hyde_mode:385 - Analyzing 801 queries with mode=raw, retriever=hybrid
+2026-03-08 15:48:47.947 | INFO     | store.embedding.custom_embeddings:_ensure_initialized:84 - Loading BGE-M3 from **/model/bge-m3 (SentenceTransformers backend)
+2026-03-08 15:48:48.371 | INFO     | store.embedding.custom_embeddings:_ensure_initialized:104 -   CUDA_VISIBLE_DEVICES=0
+2026-03-08 15:48:50.963 | INFO     | store.embedding.custom_embeddings:_ensure_initialized:120 - ✓ Loaded BGE-M3 text encoder (dim=1024, FP32) on cuda:0
+2026-03-08 15:49:04.291 | INFO     | __main__:analyze_hyde_mode:385 - Analyzing 801 queries with mode=combined, retriever=hybrid
+
+
+================================================================================
+🔬 HyDE Comparison Analysis
+   Retriever: hybrid
+   Modes: ['raw', 'combined']
+   Queries: 801
+================================================================================
+
+────────────────────────────────────────
+Running mode: raw
+────────────────────────────────────────
+   [hybrid/raw] Processed 100/801, hit@100: 92.0%
+   [hybrid/raw] Processed 200/801, hit@100: 90.5%
+   [hybrid/raw] Processed 300/801, hit@100: 89.3%
+   [hybrid/raw] Processed 400/801, hit@100: 89.2%
+   [hybrid/raw] Processed 500/801, hit@100: 89.8%
+   [hybrid/raw] Processed 600/801, hit@100: 90.5%
+   [hybrid/raw] Processed 700/801, hit@100: 90.4%
+   [hybrid/raw] Processed 800/801, hit@100: 90.5%
+
+────────────────────────────────────────
+Running mode: combined
+────────────────────────────────────────
+   [hybrid/combined] Processed 100/801, hit@100: 90.0%
+   [hybrid/combined] Processed 200/801, hit@100: 91.5%
+   [hybrid/combined] Processed 300/801, hit@100: 89.0%
+   [hybrid/combined] Processed 400/801, hit@100: 89.0%
+   [hybrid/combined] Processed 500/801, hit@100: 89.2%
+   [hybrid/combined] Processed 600/801, hit@100: 90.0%
+   [hybrid/combined] Processed 700/801, hit@100: 90.1%
+   [hybrid/combined] Processed 800/801, hit@100: 90.2%
+
+================================================================================
+📊 METRICS COMPARISON (hybrid)
+================================================================================
+
+📊 RAW (n=801)
+   Hit@1:   54.7%
+   Hit@3:   68.3%
+   Hit@5:   73.3%
+   Hit@10:  79.8%
+   Hit@50:  87.9%
+   Hit@100: 90.5%
+   MRR:        0.6308
+   Not Found:  76 (9.5%)
+
+📊 COMBINED (n=801)
+   Hit@1:   47.7%
+   Hit@3:   59.6%
+   Hit@5:   65.7%
+   Hit@10:  72.5%
+   Hit@50:  86.5%
+   Hit@100: 90.3%
+   MRR:        0.5625
+   Not Found:  78 (9.7%)
+
+────────────────────────────────────────────────────────────────────────────────
+📈 Summary Table
+────────────────────────────────────────────────────────────────────────────────
+   Metric         RAW            COMBINED       
+   ---------------------------------------------
+   hit@1          54.7%          47.7%          
+   hit@3          68.3%          59.6%          
+   hit@5          73.3%          65.7%          
+   hit@10         79.8%          72.5%          
+   hit@50         87.9%          86.5%          
+   hit@100        90.5%          90.3%          
+   mrr            0.6308         0.5625         
+
+================================================================================
+📊 Case-by-Case Analysis (Hit@10)
+================================================================================
+
+   RAW vs COMBINED:
+      raw wins: 83 queries
+      combined wins: 25 queries
+      Both succeed: 556 queries
+      Both fail: 137 queries
+      Net improvement (combined - raw): -58
+
