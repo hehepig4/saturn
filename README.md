@@ -125,6 +125,16 @@ This converts raw tables into LanceDB storage at `data/lake/lancedb/` and builds
 
 ## Configuration
 
+### API Key
+
+Create a `.env` file in the project root (auto-loaded via `python-dotenv`):
+
+```bash
+OPENROUTER_API_KEY=sk-or-v1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+This key is used for LLM API calls via OpenRouter. You can also set it as a system environment variable.
+
 ### LLM Configuration
 
 Edit `source/config/llm_models.json` to configure LLM endpoints. Saturn uses a purpose-based routing system:
