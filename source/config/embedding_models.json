@@ -1,0 +1,23 @@
+{
+  "models": {
+    "bge-m3": {
+      "name": "BAAI/bge-m3",
+      "local_path": "model/bge-m3",
+      "modalities": ["TEXT"],
+      "embedding_dim": 1024,
+      "type": "bge",
+      "description": "BGE-M3 multilingual embedding model with dense, sparse, and colbert outputs",
+      "text_encoder": {
+        "enabled": true,
+        "batch_size": 64,
+        "max_length": 8192,
+        "use_fp16": true
+      }
+    }
+  },
+  "default_models": {
+    "TEXT": "bge-m3"
+  },
+  "model_aliases": {
+  }
+}

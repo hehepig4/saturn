@@ -1,0 +1,48 @@
+{
+  "models": {
+    "default_model": {
+      "provider": "openai",
+      "model_name": "Qwen3-Next-80B-A3B-Instruct",
+      "description": "OpenAI-compatible model for population and retrieval",
+      "temperature": 0,
+      "max_tokens": 32768,
+      "purpose": "default",
+      "api_config_override": {
+        "base_url": "http://localhost:8000/v1",
+        "base_url_env": "SATURN_LLM_BASE_URL",
+        "api_key_env": "SATURN_LLM_API_KEY"
+      }
+    },
+    "gemini_model": {
+      "provider": "openai",
+      "model_name": "google/gemini-3-flash-preview",
+      "description": "Online Gemini via OpenRouter",
+      "temperature": 0,
+      "max_tokens": 32768,
+      "purpose": "gemini"
+    },
+    "local_vllm_model": {
+      "provider": "openai",
+      "model_name": "Qwen3-Next-80B-A3B-Instruct",
+      "description": "OpenAI-compatible model for population and retrieval",
+      "temperature": 0,
+      "max_tokens": 32768,
+      "purpose": "local",
+      "api_config_override": {
+        "base_url": "http://localhost:8000/v1",
+        "base_url_env": "SATURN_LLM_BASE_URL",
+        "api_key_env": "SATURN_LLM_API_KEY"
+      }
+    }
+  },
+  "purpose_mapping": {
+    "default": "default_model",
+    "local": "local_vllm_model",
+    "gemini": "gemini_model"
+  },
+  "api_config": {
+    "base_url": "URL_NOT_SET",
+    "max_retries": 3,
+    "api_key_env": "OPENROUTER_API_KEY"
+  }
+}

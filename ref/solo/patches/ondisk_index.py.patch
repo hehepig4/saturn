@@ -1,0 +1,45 @@
+--- a/relevance/src/ondisk_index.py
++++ b/relevance/src/ondisk_index.py
+@@ -12,9 +12,28 @@ import glob
+ import math
+ import time
+ 
+ class OndiskIndexer:
+-    def __init__(self, index_file, passage_file):
++    def __init__(self, index_file, passage_file, use_gpu=True):
++        print(f'Loading index from {index_file}...')
+         self.index = faiss.read_index(index_file, faiss.IO_FLAG_ONDISK_SAME_DIR)
++        self.use_gpu = use_gpu
++        
++        # Try to move index to GPU for faster search
++        if use_gpu and faiss.get_num_gpus() > 0:
++            try:
++                print(f'Moving index to GPU (available GPUs: {faiss.get_num_gpus()})...')
++                co = faiss.GpuMultipleClonerOptions()
++                co.shard = True  # Shard across multiple GPUs
++                co.useFloat16 = True  # Use FP16 to save memory
++                self.index = faiss.index_cpu_to_all_gpus(self.index, co)
++                print('Index successfully moved to GPU!')
++            except Exception as e:
++                print(f'GPU transfer failed, using CPU: {e}')
++                self.use_gpu = False
++        else:
++            print('No GPU available or GPU disabled, using CPU')
++            self.use_gpu = False
++            
+         self.passage_dict = self.load_passages(passage_file)
+    
+     def load_passages(self, passage_file):
+@@ -26,6 +45,12 @@ class OndiskIndexer:
+         return passage_dict
+     
+     def search(self, query, top_n=100, n_probe=128, min_tables=5, max_retr=1000):
++        # FAISS GPU only supports K < 2048 (strictly less than)
++        gpu_max_k = 2047
++        if self.use_gpu:
++            top_n = min(top_n, gpu_max_k)
++            max_retr = min(max_retr, gpu_max_k)
++        
+         result = []
+         N = len(query)
+         for idx in range(0, N):
